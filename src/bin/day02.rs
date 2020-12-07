@@ -37,8 +37,8 @@ fn count_valid_passwords_part2(plist: &PasswordList) -> String {
     for pw in &plist.passwords {
         // Previous char-based indexing solution, for reference:
         //let n1_is_c = pw.password.chars().nth(pw.n1-1).unwrap() == pw.c;
-        let n1_is_c = pw.password.as_bytes()[pw.n1-1] == pw.c;
-        let n2_is_c = pw.password.as_bytes()[pw.n2-1] == pw.c;
+        let n1_is_c = pw.password.as_bytes()[pw.n1 - 1] == pw.c;
+        let n2_is_c = pw.password.as_bytes()[pw.n2 - 1] == pw.c;
         if (n1_is_c && !n2_is_c) || (!n1_is_c && n2_is_c) {
             valid_count += 1;
         }
@@ -47,13 +47,15 @@ fn count_valid_passwords_part2(plist: &PasswordList) -> String {
 }
 
 // Day-specific code to process text data into custom problem state
-fn parse_input_text(input: &str, ) -> PasswordList {
-    let mut plist = PasswordList { passwords: Vec::new(), };
+fn parse_input_text(input: &str) -> PasswordList {
+    let mut plist = PasswordList {
+        passwords: Vec::new(),
+    };
     let re = Regex::new(r"^(?P<n1>\d+)-(?P<n2>\d+) (?P<c>[a-z]): (?P<pw>[a-z]+)$").unwrap();
     for line in input.lines() {
         assert!(re.is_match(line));
         let caps = re.captures(line).unwrap();
-        plist.passwords.push(Password{
+        plist.passwords.push(Password {
             n1: caps.name("n1").unwrap().as_str().parse::<usize>().unwrap(),
             n2: caps.name("n2").unwrap().as_str().parse::<usize>().unwrap(),
             c: caps.name("c").unwrap().as_str().as_bytes()[0],
@@ -63,15 +65,17 @@ fn parse_input_text(input: &str, ) -> PasswordList {
     plist
 }
 
-fn process_text(input_text:&str, processor: ProcessInputFunc, expected: &str) {
+fn process_text(input_text: &str, processor: ProcessInputFunc, expected: &str) -> String {
     let state = parse_input_text(input_text);
     let actual = processor(&state);
     assert_eq!(expected, actual);
+    actual
 }
 
-fn process_file(filename: &str, processor: ProcessInputFunc, expected: &str) {
+fn process_file(filename: &str, processor: ProcessInputFunc, expected: &str) -> String {
     let contents = fs::read_to_string(filename).expect(&format!("Could not load {}", filename));
-    process_text(&contents, processor, expected);
+    let actual = process_text(&contents, processor, expected);
+    actual
 }
 
 #[test]
@@ -92,6 +96,12 @@ fn test_part2() {
     process_text(input, count_valid_passwords_part2, "1");
 }
 fn main() {
-    process_file("input.txt", count_valid_passwords_part1, "591");
-    process_file("input.txt", count_valid_passwords_part2, "335");
+    println!(
+        "Part 1: {}",
+        process_file("inputs/input02.txt", count_valid_passwords_part1, "591")
+    );
+    println!(
+        "Part 2: {}",
+        process_file("inputs/input02.txt", count_valid_passwords_part2, "335")
+    );
 }

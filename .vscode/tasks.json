@@ -14,7 +14,15 @@
         {
             "label": "cargo run",
             "type": "shell",
-            "command": "cargo run",
+            "command": "cargo run --bin ${fileBasenameNoExtension}",
+            "problemMatcher": [
+                "$rustc"
+            ]
+        },
+        {
+            "label": "cargo build",
+            "type": "shell",
+            "command": "cargo build",
             "problemMatcher": [
                 "$rustc"
             ],
@@ -24,17 +32,17 @@
             }
         },
         {
-            "label": "cargo build",
+            "label": "cargo format",
             "type": "shell",
-            "command": "cargo build",
+            "command": "cargo fmt",
             "problemMatcher": [
                 "$rustc"
             ]
         },
         {
-            "label": "cargo fmt",
+            "label": "cargo test",
             "type": "shell",
-            "command": "cargo fmt",
+            "command": "cargo test",
             "problemMatcher": [
                 "$rustc"
             ]
