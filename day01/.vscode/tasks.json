@@ -30,6 +30,14 @@
             "problemMatcher": [
                 "$rustc"
             ]
+        },
+        {
+            "label": "cargo fmt",
+            "type": "shell",
+            "command": "cargo fmt",
+            "problemMatcher": [
+                "$rustc"
+            ]
         }
     ]
 }
