@@ -18,5 +18,6 @@ My [Advent of Code 2020](https://adventofcode.com/2020) solutions, implemented i
 - Raw strings with `r"blah"`
 - Indexing into a string's `char`s is verbose. For AoC purposes, we'll assume ASCII and 1 `u8` = 1 character.
 - Basic use of the [`Regex`](https://docs.rs/regex) crate -- checking for matches, named capture groups, etc.
+- How to set up Cargo for multi-target packages. Less duplication of target metadata this way.
 - **Q:** Why is VS Code inserting suggestions after `.` or `:` in comments?
 - **Q:** How to generalize this code into a template more easily applicable to future days' problems?
