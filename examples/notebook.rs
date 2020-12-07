@@ -37,7 +37,7 @@ impl User {
 impl User {
     // Methods without a "self" parameter are "associated methods", Rust-ese for C++ static functions
     // This is commonly used for new()/create() methods
-    fn new(name: String, email: String, birth_year: i32) -> User {
+    fn _new(name: String, email: String, birth_year: i32) -> User {
         User {
             name,
             email,
