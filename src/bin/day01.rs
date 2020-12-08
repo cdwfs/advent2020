@@ -63,7 +63,7 @@ fn process_file(filename: &str, processor: ProcessInputFunc, expected: &str) -> 
 }
 
 #[test]
-fn test_part1() {
+fn test_day01_part1() {
     let input = "\
 1721
 979
@@ -75,7 +75,7 @@ fn test_part1() {
 }
 
 #[test]
-fn test_part2() {
+fn test_day01_part2() {
     let input = "\
 1721
 979

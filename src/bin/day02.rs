@@ -79,7 +79,7 @@ fn process_file(filename: &str, processor: ProcessInputFunc, expected: &str) -> 
 }
 
 #[test]
-fn test_part1() {
+fn test_day02_part1() {
     let input = "\
 1-3 a: abcde
 1-3 b: cdefg
@@ -88,7 +88,7 @@ fn test_part1() {
 }
 
 #[test]
-fn test_part2() {
+fn test_day02_part2() {
     let input = "\
 1-3 a: abcde
 1-3 b: cdefg
