@@ -9,7 +9,6 @@ My [Advent of Code 2020](https://adventofcode.com/2020) solutions, implemented i
 - Reading text files line-by-line with `BufReader`
 - Parsing strings as integers with `my_str.parse()`
 - `Vec` for growable lists
-- *TODO*: Unit tests
 
 ### [Day 2: Password Philosophy](https://adventofcode.com/2020/day/2)
 - All-at-once text file parsing using `fs::read_to_string()`. Nothing this month should be large enough to warrant `BufReader`.
