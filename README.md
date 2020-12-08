@@ -24,3 +24,4 @@ My [Advent of Code 2020](https://adventofcode.com/2020) solutions, implemented i
 ### [Day 3: Passport Processing](https://adventofcode.com/2020/day/3)
 - Basic 2D grid struct with new/get/set methods
 - `vec!` macro for array-like `Vec` declarations
+- `${fileBasenameNoExtension}` substitution works in `launch.json` (no more day-specific debug configurations!)
