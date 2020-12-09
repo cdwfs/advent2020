@@ -3,6 +3,8 @@ My [Advent of Code 2020](https://adventofcode.com/2020) solutions, implemented i
 
 ## TIL
 
+A list of the puzzles, and what new language/tool features I learned each day:
+
 ### [Day 1: Report Repair](https://adventofcode.com/2020/day/1)
 - Basic Rust + VSCode integration
 - Basic Rust Git configuration (`.gitignore`, `.gitattributes`)
@@ -36,3 +38,6 @@ My [Advent of Code 2020](https://adventofcode.com/2020) solutions, implemented i
 - radix conversion with `u32::from_str_radix()`
 - in-place array sorting: `a.sort()`
 - `std::cmp::max(a,b)` and `std::cmp::min(a,b)`
+
+### [Day 6: Custom Customs](https://adventofcode.com/2020/day/6)
+- nothing new, really
