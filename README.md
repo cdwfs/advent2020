@@ -16,12 +16,18 @@ My [Advent of Code 2020](https://adventofcode.com/2020) solutions, implemented i
 - Unit tests with `#[test]`
 - Raw strings with `r"blah"`
 - Indexing into a string's `char`s is verbose. For AoC purposes, we'll assume ASCII and 1 `u8` = 1 character.
-- Basic use of the [`Regex`](https://docs.rs/regex) crate -- checking for matches, named capture groups, etc.
+- Basic use of the [`regex`](https://docs.rs/regex) crate -- checking for matches, named capture groups, etc.
 - How to set up Cargo for multi-target packages. Less duplication of target metadata this way.
 - **Q:** Why is VS Code inserting suggestions after `.` or `:` in comments?
 - **Q:** How to generalize this code into a template more easily applicable to future days' problems?
 
-### [Day 3: Passport Processing](https://adventofcode.com/2020/day/3)
+### [Day 3: Toboggan Trajectory](https://adventofcode.com/2020/day/3)
 - Basic 2D grid struct with new/get/set methods
 - `vec!` macro for array-like `Vec` declarations
 - `${fileBasenameNoExtension}` substitution works in `launch.json` (no more day-specific debug configurations!)
+
+### [Day 4: Passport Processing](https://adventofcode.com/2020/day/4)
+- Debugging Rust unit tests in VS Code (use the target/debug/deps/project-hash.exe executable, run with --test-threads=1 to keep the callstack from jumping around)
+- Basic HashMap usage
+- Custom message for assert failures
+- match statement, with non-fatal `None` handling for `Option<T>`
