@@ -27,7 +27,12 @@ My [Advent of Code 2020](https://adventofcode.com/2020) solutions, implemented i
 - `${fileBasenameNoExtension}` substitution works in `launch.json` (no more day-specific debug configurations!)
 
 ### [Day 4: Passport Processing](https://adventofcode.com/2020/day/4)
-- Debugging Rust unit tests in VS Code (use the target/debug/deps/project-hash.exe executable, run with --test-threads=1 to keep the callstack from jumping around)
+- Debugging Rust unit tests in VS Code (use the target/debug/deps/project-hash.exe executable, run with `--test-threads=1` to keep the callstack from jumping around)
 - Basic HashMap usage
 - Custom message for assert failures
 - match statement, with non-fatal `None` handling for `Option<T>`
+
+### [Day 5: Binary Boarding](https://adventofcode.com/2020/day/5)
+- radix conversion with `u32::from_str_radix()`
+- in-place array sorting: `a.sort()`
+- `std::cmp::max(a,b)` and `std::cmp::min(a,b)`
