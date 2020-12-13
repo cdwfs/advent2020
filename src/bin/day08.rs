@@ -50,32 +50,23 @@ fn solve_part2(input: &Program) -> String {
                 break; // infinite loop
             }
             executed.insert(ip);
-            // This feels wrong. Why can't I borrow an instruction
-            // and either process it or a placeholder?
-            let inst = &input.instructions[ip as usize];
-            if (ip as usize == ip_switch) {
-                let inst_swap = match *inst {
+            let mut inst = &input.instructions[ip as usize];
+            let mut _inst_swap = Instruction::NOP(0);
+            if ip as usize == ip_switch {
+                _inst_swap = match *inst {
                     Instruction::NOP(arg) => Instruction::JMP(arg),
                     Instruction::JMP(arg) => Instruction::NOP(arg),
                     Instruction::ACC(arg) => Instruction::ACC(arg),
                 };
-                match inst_swap {
-                    Instruction::NOP(_) => ip += 1,
-                    Instruction::ACC(arg) => {
-                        acc += arg;
-                        ip += 1
-                    }
-                    Instruction::JMP(arg) => ip += arg,
-                }    
-            } else {
-                match inst {
-                    Instruction::NOP(_) => ip += 1,
-                    Instruction::ACC(arg) => {
-                        acc += arg;
-                        ip += 1
-                    }
-                    Instruction::JMP(arg) => ip += arg,
+                inst = &_inst_swap;
+            }
+            match inst {
+                Instruction::NOP(_) => ip += 1,
+                Instruction::ACC(arg) => {
+                    acc += arg;
+                    ip += 1
                 }
+                Instruction::JMP(arg) => ip += arg,
             }
         }
     }
