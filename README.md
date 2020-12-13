@@ -46,3 +46,8 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - `HashSet` for value-less hash maps
 - `String.split()` returns an iterator, not a collection
 - Started to run into lifetime issues. I can solve them by just making things `String` until they go away, but that's not sustainable.
+
+### [Day 8: Handheld Halting](https://adventofcode.com/2020/day/8)
+- I made an `enum`. Though in this case it could've been a struct in the end, since NOPs have args as well.
+- Q: how to safely add a signed integer to a `usize`? (typecasting around feels like it misses the point)
+- I feel like `HashMap.entry()` could save me some redundant lookups, but performance hasn't been an issue yet.
