@@ -41,3 +41,8 @@ A list of the puzzles, and what new language/tool features I learned each day:
 
 ### [Day 6: Custom Customs](https://adventofcode.com/2020/day/6)
 - nothing new, really
+
+### [Day 7: Handy Haversacks](https://adventofcode.com/2020/day/7)
+- `HashSet` for value-less hash maps
+- `String.split()` returns an iterator, not a collection
+- Started to run into lifetime issues. I can solve them by just making things `String` until they go away, but that's not sustainable.
