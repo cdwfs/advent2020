@@ -55,3 +55,7 @@ A list of the puzzles, and what new language/tool features I learned each day:
 ### [Day 9: Encoding Error](https://adventofcode.com/2020/day/9)
 - Some basic functional programming with `.map()` and lambdas
 - Q: How best to pass side-channel data into the "solve" functions, such as the history size for part 1, or the target sum from part 2? I guess an `enum` of some sort?
+
+### [Day 10: Adapter Array](https://adventofcode.com/2020/day/10)
+- Hash map keys _must_ be borrowed. Even if they're literals. (Q: why?)
+- `HashMap.Get(&k).unwrap_or(default)` for potentially missing values
