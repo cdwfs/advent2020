@@ -51,3 +51,7 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - I made an `enum`. Though in this case it could've been a struct in the end, since NOPs have args as well.
 - Q: how to safely add a signed integer to a `usize`? (typecasting around feels like it misses the point)
 - I feel like `HashMap.entry()` could save me some redundant lookups, but performance hasn't been an issue yet.
+
+### [Day 9: Encoding Error](https://adventofcode.com/2020/day/9)
+- Some basic functional programming with `.map()` and lambdas
+- Q: How best to pass side-channel data into the "solve" functions, such as the history size for part 1, or the target sum from part 2? I guess an `enum` of some sort?
