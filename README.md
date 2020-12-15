@@ -59,3 +59,9 @@ A list of the puzzles, and what new language/tool features I learned each day:
 ### [Day 10: Adapter Array](https://adventofcode.com/2020/day/10)
 - Hash map keys _must_ be borrowed. Even if they're literals. (Q: why?)
 - `HashMap.Get(&k).unwrap_or(default)` for potentially missing values
+
+### [Day 11: Seating System](https://adventofcode.com/2020/day/11)
+- `std::mem::swap()` to exchange two mutable locations without deinitializing
+- No ternary operator; `if-else` expressions have a value instead: `x = if (c) { a } else { b };
+- integer casts: `usize::try_from(n).unwrap()`
+- `#[rustfmt::skip]` on a function/etc. to opt out of `rustfmt`
