@@ -65,3 +65,7 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - No ternary operator; `if-else` expressions have a value instead: `x = if (c) { a } else { b };
 - integer casts: `usize::try_from(n).unwrap()`
 - `#[rustfmt::skip]` on a function/etc. to opt out of `rustfmt`
+
+### [Day 12: Rain Risk](https://adventofcode.com/2020/day/12)
+- absolute value is a method on integer types, e.g. `-3.abs()`
+- No Python-esque tuple assignments; if `wx` and `wy` exist, you can't swap with `wx,wy = wy,wx;`
