@@ -69,3 +69,6 @@ A list of the puzzles, and what new language/tool features I learned each day:
 ### [Day 12: Rain Risk](https://adventofcode.com/2020/day/12)
 - absolute value is a method on integer types, e.g. `-3.abs()`
 - No Python-esque tuple assignments; if `wx` and `wy` exist, you can't swap with `wx,wy = wy,wx;`
+
+### [Day 13: Shuttle Search](https://adventofcode.com/2020/day/13)
+- Probably rediscovered some modular arithmetic theorem? ([Sure enough!](https://en.wikipedia.org/wiki/Chinese_remainder_theorem))
