@@ -72,3 +72,7 @@ A list of the puzzles, and what new language/tool features I learned each day:
 
 ### [Day 13: Shuttle Search](https://adventofcode.com/2020/day/13)
 - Probably rediscovered some modular arithmetic theorem? ([Sure enough!](https://en.wikipedia.org/wiki/Chinese_remainder_theorem))
+
+### [Day 14: Docking Data](https://adventofcode.com/2020/day14)
+- Rust calls reduce() [`fold()`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.fold).
+- Successful use of `HashMap::entry()`: `*memory.entry(addr).or_default() = val;`
