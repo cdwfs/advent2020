@@ -76,3 +76,17 @@ A list of the puzzles, and what new language/tool features I learned each day:
 ### [Day 14: Docking Data](https://adventofcode.com/2020/day14)
 - Rust calls reduce() [`fold()`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.fold).
 - Successful use of `HashMap::entry()`: `*memory.entry(addr).or_default() = val;`
+
+### [Day 15: Rambunctious Recitation](https://adventofcode.com/2020/day15)
+- HashMaps are _slow_ in debug builds.
+- Need to come back and reoptimize/clean this up so I can re-enable the unit tests for part 2, I'm doing a gajillion unnecessary lookups.
+
+### [Day 16: Ticket Translation](https://adventofcode.com/2020/day16)
+
+### [Day 17: Conway Cubes](https://adventofcode.com/2020/day17)
+
+### [Day 18: Operation Order](https://adventofcode.com/2020/day18)
+
+### [Day 19: Monster Messages](https://adventofcode.com/2020/day19)
+
+### [Day 20: Jurassic Jigsaw](https://adventofcode.com/2020/day/20)
