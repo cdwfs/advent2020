@@ -41,11 +41,8 @@ impl Input {
         for ny in y - 1..y + 2 {
             for nx in x - 1..x + 2 {
                 if x != nx || y != ny {
-                    match self.get_old(nx, ny) {
-                        Some(b'#') => {
-                            count += 1;
-                        }
-                        _ => {}
+                    if let Some(b'#') = self.get_old(nx, ny) {
+                        count += 1;
                     }
                 }
             }
