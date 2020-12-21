@@ -51,7 +51,7 @@ fn solve_part2(input: &Input) -> String {
 fn parse_input_text(input_text: &str) -> Input {
     Input {
         numbers: input_text
-            .split(",")
+            .split(',')
             .map(|x| x.parse::<u64>().unwrap())
             .collect(),
     }

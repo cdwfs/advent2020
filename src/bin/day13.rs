@@ -60,7 +60,7 @@ fn parse_input_text(input_text: &str) -> Input {
     let lines: Vec<&str> = input_text.lines().collect();
     let t0 = lines[0].parse::<u64>().unwrap();
     let mut bus_ids = Vec::new();
-    for bus in lines[1].split(",") {
+    for bus in lines[1].split(',') {
         bus_ids.push(match bus {
             "x" => None,
             id => Some(id.parse::<u64>().unwrap()),
