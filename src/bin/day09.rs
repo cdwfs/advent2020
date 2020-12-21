@@ -12,8 +12,7 @@ fn is_valid_number(n: u64, history: &[u64]) -> bool {
     let len = history.len();
     for ia in 0..len - 1 {
         let a = history[ia];
-        for ib in ia + 1..len {
-            let b = history[ib];
+        for b in history[ia + 1..len].iter() {
             if a + b == n {
                 return true;
             }

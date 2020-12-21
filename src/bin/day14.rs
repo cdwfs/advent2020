@@ -78,9 +78,9 @@ fn solve_part2(input: &Input) -> String {
                 let permutation_count = 1<<x_count;
                 for i in 0..permutation_count {
                     let mut a = addr;
-                    for b in 0..x_count {
-                        let bit = (i>>b) & 1;
-                        a |= bit << x_bits[b];
+                    for (ib,b) in x_bits[..x_count].iter().enumerate() {
+                        let bit = (i>>ib) & 1;
+                        a |= bit << b;
                     }
                     *memory.entry(a).or_default() = *val;
                 }

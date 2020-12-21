@@ -65,15 +65,13 @@ fn parse_input_text(input: &str) -> Grid {
         grid_height += 1;
     }
     let mut grid = Grid::new(grid_width, grid_height, b'.');
-    let mut y = 0;
-    for line in input.lines() {
+    for (y, line) in input.lines().enumerate() {
         let bytes = line.as_bytes();
-        for x in 0..bytes.len() {
-            if bytes[x] == b'#' {
+        for (x, b) in bytes.iter().enumerate() {
+            if *b == b'#' {
                 grid.set(x, y, b'#');
             }
         }
-        y += 1;
     }
     grid
 }
