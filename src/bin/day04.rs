@@ -104,7 +104,8 @@ fn solve_part2(plist: &PassportList) -> String {
                 let unit = caps.name("unit").unwrap().as_str();
                 if unit == "cm" && (height < 150 || height > 193) {
                     continue;
-                } else if unit == "in" && (height < 59 || height > 76) {
+                }
+                if unit == "in" && (height < 59 || height > 76) {
                     continue;
                 }
             }
