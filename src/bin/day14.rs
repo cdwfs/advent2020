@@ -6,7 +6,7 @@ use std::fs;
 #[derive(Debug)]
 enum Instruction<'a> {
     Mask(&'a str),
-    Mem(u64,u64), // addr, value
+    Mem(u64, u64), // addr, value
 }
 #[derive(Debug)]
 struct Input<'a> {
@@ -97,16 +97,18 @@ fn parse_input_text(input_text: &str) -> Input {
     for line in input_text.lines() {
         instructions.push(match &line[..2] {
             "ma" => {
-                assert_eq!(36+7, line.len()); // "mask = " + 36 of X/0/1
+                assert_eq!(36 + 7, line.len()); // "mask = " + 36 of X/0/1
                 Instruction::Mask(&line[7..])
             }
             "me" => {
-                let caps = mem_re.captures(line).expect(&format!("Malformed mem instruction {}", line));
+                let caps = mem_re
+                    .captures(line)
+                    .expect(&format!("Malformed mem instruction {}", line));
                 let addr = caps.name("addr").unwrap().as_str().parse::<u64>().unwrap();
                 let val = caps.name("value").unwrap().as_str().parse::<u64>().unwrap();
-                Instruction::Mem(addr,val)
+                Instruction::Mem(addr, val)
             }
-            _ => panic!("Malformed input line {}", line)
+            _ => panic!("Malformed input line {}", line),
         })
     }
     Input { instructions }

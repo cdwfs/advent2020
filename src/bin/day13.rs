@@ -3,8 +3,8 @@ use std::fs;
 // TODO: a trait, to mark this as "Thing That Is The Result Of Processing Input"
 #[derive(Debug)]
 struct Input {
-    t0:u64,
-    bus_ids:Vec<Option<u64>>,
+    t0: u64,
+    bus_ids: Vec<Option<u64>>,
 }
 
 // Generic signature for "process problem state to get an answer"
@@ -57,7 +57,7 @@ fn solve_part2(input: &Input) -> String {
 
 // Day-specific code to process text data into custom problem state
 fn parse_input_text(input_text: &str) -> Input {
-    let lines:Vec<&str> = input_text.lines().collect();
+    let lines: Vec<&str> = input_text.lines().collect();
     let t0 = lines[0].parse::<u64>().unwrap();
     let mut bus_ids = Vec::new();
     for bus in lines[1].split(",") {

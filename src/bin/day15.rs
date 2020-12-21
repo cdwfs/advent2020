@@ -10,13 +10,13 @@ struct Input {
 // Generic signature for "process problem state to get an answer"
 type ProcessInputFunc = fn(&Input) -> String;
 
-fn nth_in_sequence(input: &Input, seq_len:usize) -> String {
-    let mut last_turn_spoken = HashMap::<u64,usize>::new();
-    let mut prev_last_turn_spoken = HashMap::<u64,usize>::new();
-    for (i,n) in input.numbers.iter().enumerate() {
+fn nth_in_sequence(input: &Input, seq_len: usize) -> String {
+    let mut last_turn_spoken = HashMap::<u64, usize>::new();
+    let mut prev_last_turn_spoken = HashMap::<u64, usize>::new();
+    for (i, n) in input.numbers.iter().enumerate() {
         last_turn_spoken.insert(*n, i); // assumes no repetition in starting numbers
     }
-    let mut n:u64 = *input.numbers.last().unwrap();
+    let mut n: u64 = *input.numbers.last().unwrap();
     for turn in input.numbers.len()..seq_len {
         let last = *last_turn_spoken.get(&n).unwrap();
         if !prev_last_turn_spoken.contains_key(&n) {
@@ -49,7 +49,12 @@ fn solve_part2(input: &Input) -> String {
 
 // Day-specific code to process text data into custom problem state
 fn parse_input_text(input_text: &str) -> Input {
-    Input { numbers: input_text.split(",").map(|x| x.parse::<u64>().unwrap()).collect() }
+    Input {
+        numbers: input_text
+            .split(",")
+            .map(|x| x.parse::<u64>().unwrap())
+            .collect(),
+    }
 }
 
 fn process_text(input_text: &str, processor: ProcessInputFunc, expected: &str) -> String {
