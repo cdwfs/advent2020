@@ -103,7 +103,7 @@ fn parse_input_text(input_text: &str) -> Input {
             "me" => {
                 let caps = mem_re
                     .captures(line)
-                    .expect(&format!("Malformed mem instruction {}", line));
+                    .unwrap_or_else(|| panic!("Malformed mem instruction {}", line));
                 let addr = caps.name("addr").unwrap().as_str().parse::<u64>().unwrap();
                 let val = caps.name("value").unwrap().as_str().parse::<u64>().unwrap();
                 Instruction::Mem(addr, val)
@@ -122,9 +122,9 @@ fn process_text(input_text: &str, processor: ProcessInputFunc, expected: &str) -
 }
 
 fn process_file(filename: &str, processor: ProcessInputFunc, expected: &str) -> String {
-    let contents = fs::read_to_string(filename).expect(&format!("Could not load {}", filename));
-    let actual = process_text(&contents, processor, expected);
-    actual
+    let contents =
+        fs::read_to_string(filename).unwrap_or_else(|_| panic!("Could not load {}", filename));
+    process_text(&contents, processor, expected)
 }
 
 const _TEST_INPUT1: &str = "\

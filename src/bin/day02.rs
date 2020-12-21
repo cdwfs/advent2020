@@ -73,9 +73,9 @@ fn process_text(input_text: &str, processor: ProcessInputFunc, expected: &str) -
 }
 
 fn process_file(filename: &str, processor: ProcessInputFunc, expected: &str) -> String {
-    let contents = fs::read_to_string(filename).expect(&format!("Could not load {}", filename));
-    let actual = process_text(&contents, processor, expected);
-    actual
+    let contents =
+        fs::read_to_string(filename).unwrap_or_else(|_| panic!("Could not load {}", filename));
+    process_text(&contents, processor, expected)
 }
 
 #[test]

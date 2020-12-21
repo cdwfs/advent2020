@@ -85,9 +85,9 @@ fn process_file(
     target_sum: u64,
     expected: &str,
 ) -> String {
-    let contents = fs::read_to_string(filename).expect(&format!("Could not load {}", filename));
-    let actual = process_text(&contents, processor, history_size, target_sum, expected);
-    actual
+    let contents =
+        fs::read_to_string(filename).unwrap_or_else(|_| panic!("Could not load {}", filename));
+    process_text(&contents, processor, history_size, target_sum, expected)
 }
 
 const _TEST_INPUT1: &str = "\
