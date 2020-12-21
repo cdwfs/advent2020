@@ -45,7 +45,7 @@ fn solve_part2(slist: &SeatList) -> String {
     for seat in slist.seats.iter() {
         seat_ids.push(get_seat_id(seat));
     }
-    seat_ids.sort();
+    seat_ids.sort_unstable();
     for i in 1..seat_ids.len() - 1 {
         if seat_ids[i - 1] + 2 == seat_ids[i] {
             return (seat_ids[i] - 1).to_string();

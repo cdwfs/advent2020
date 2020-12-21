@@ -49,7 +49,7 @@ fn parse_input_text(input_text: &str) -> Input {
         .map(|line| line.parse::<u32>().unwrap())
         .collect();
     numbers.push(0);
-    numbers.sort();
+    numbers.sort_unstable();
     numbers.push(numbers.last().unwrap() + 3);
     Input { numbers }
 }
