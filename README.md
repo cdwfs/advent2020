@@ -82,6 +82,8 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - Need to come back and reoptimize/clean this up so I can re-enable the unit tests for part 2, I'm doing a gajillion unnecessary lookups.
 
 ### [Day 16: Ticket Translation](https://adventofcode.com/2020/day16)
+- `cargo clippy`! Went back and fixed [all the clippy lints](https://rust-lang.github.io/rust-clippy/master/index.html) in previous days' solutions.
+- Use 64-bit integers everywhere!
 
 ### [Day 17: Conway Cubes](https://adventofcode.com/2020/day17)
 
