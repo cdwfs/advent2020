@@ -43,7 +43,7 @@ fn solve_part1(input: &Input) -> String {
             }
         }
     }
-    memory.values().fold(0, |acc,x| acc+x).to_string()
+    memory.values().sum::<u64>().to_string()
 }
 
 #[rustfmt::skip]
@@ -87,7 +87,7 @@ fn solve_part2(input: &Input) -> String {
             }
         }
     }
-    memory.values().fold(0, |acc,x| acc+x).to_string()
+    memory.values().sum::<u64>().to_string()
 }
 
 // Day-specific code to process text data into custom problem state
