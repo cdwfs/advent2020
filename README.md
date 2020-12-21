@@ -86,6 +86,10 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - Use 64-bit integers everywhere!
 
 ### [Day 17: Conway Cubes](https://adventofcode.com/2020/day17)
+- HashSet
+- static constant arrays
+- Tuple structs
+- Initializing collections with `.with_capacity()` instead of `new()` if an upper-bound (or exact) size is known at creation time.
 
 ### [Day 18: Operation Order](https://adventofcode.com/2020/day18)
 
