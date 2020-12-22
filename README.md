@@ -92,6 +92,8 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - Initializing collections with `.with_capacity()` instead of `new()` if an upper-bound (or exact) size is known at creation time.
 
 ### [Day 18: Operation Order](https://adventofcode.com/2020/day18)
+- Some new string iteration functions: `.matches()`, `.match_indices()`, `.position()`, etc. But, definitely not clear which are defined on which string types.
+- I am not good at `String`/`str`/`&str`/`[u8]` manipulation in Rust :(. In part 2 especially, I'm creating new `String`s all over the place just to keep the borrow checker happy.
 
 ### [Day 19: Monster Messages](https://adventofcode.com/2020/day19)
 
