@@ -3,13 +3,13 @@ use std::fs;
 // TODO: a trait, to mark this as "Thing That Is The Result Of Processing Input"
 #[derive(Debug)]
 struct Input<'a> {
-    equations:Vec<&'a str>,
+    equations: Vec<&'a str>,
 }
 
 // Generic signature for "process problem state to get an answer"
 type ProcessInputFunc = fn(&Input) -> String;
 
-fn eval_expr_no_parens1(expr:&str) -> i64 {
+fn eval_expr_no_parens1(expr: &str) -> i64 {
     let mut result = 0;
     let mut op = "+";
     for tok in expr.split(' ') {
@@ -28,26 +28,31 @@ fn eval_expr_no_parens1(expr:&str) -> i64 {
     result
 }
 
-fn eval_expr1(expr:&str) -> i64 {
+fn eval_expr1(expr: &str) -> i64 {
     let mut e = expr.to_string();
-    let lparen_indices:Vec<usize> = e.rmatch_indices('(').map(|(i,_)| i).collect();
+    let lparen_indices: Vec<usize> = e.rmatch_indices('(').map(|(i, _)| i).collect();
     for lparen_index in lparen_indices {
         let rparen_index = lparen_index + e[lparen_index..].find(')').unwrap();
-        let result = eval_expr_no_parens1(&e[lparen_index+1..rparen_index]);
-        e = format!("{}{}{}", e[0..lparen_index].to_string(), result, e[rparen_index+1..].to_string());
+        let result = eval_expr_no_parens1(&e[lparen_index + 1..rparen_index]);
+        e = format!(
+            "{}{}{}",
+            e[0..lparen_index].to_string(),
+            result,
+            e[rparen_index + 1..].to_string()
+        );
     }
     eval_expr_no_parens1(&e)
 }
 
-fn eval_expr_no_parens2(expr:&str) -> i64 {
-    let tokens:Vec<&str> = expr.split(' ').collect();
-    let mut tokens2:Vec<String> = Vec::with_capacity(tokens.len());
+fn eval_expr_no_parens2(expr: &str) -> i64 {
+    let tokens: Vec<&str> = expr.split(' ').collect();
+    let mut tokens2: Vec<String> = Vec::with_capacity(tokens.len());
     let mut i = 0;
     while i < tokens.len() {
         if tokens[i] == "+" {
             let a = tokens2.pop().unwrap().parse::<i64>().unwrap();
-            let b = tokens[i+1].parse::<i64>().unwrap();
-            tokens2.push((a+b).to_string());
+            let b = tokens[i + 1].parse::<i64>().unwrap();
+            tokens2.push((a + b).to_string());
             i += 2;
         } else {
             tokens2.push(tokens[i].to_string());
@@ -72,13 +77,18 @@ fn eval_expr_no_parens2(expr:&str) -> i64 {
     result
 }
 
-fn eval_expr2(expr:&str) -> i64 {
+fn eval_expr2(expr: &str) -> i64 {
     let mut e = expr.to_string();
-    let lparen_indices:Vec<usize> = e.rmatch_indices('(').map(|(i,_)| i).collect();
+    let lparen_indices: Vec<usize> = e.rmatch_indices('(').map(|(i, _)| i).collect();
     for lparen_index in lparen_indices {
         let rparen_index = lparen_index + e[lparen_index..].find(')').unwrap();
-        let result = eval_expr_no_parens2(&e[lparen_index+1..rparen_index]);
-        e = format!("{}{}{}", e[0..lparen_index].to_string(), result, e[rparen_index+1..].to_string());
+        let result = eval_expr_no_parens2(&e[lparen_index + 1..rparen_index]);
+        e = format!(
+            "{}{}{}",
+            e[0..lparen_index].to_string(),
+            result,
+            e[rparen_index + 1..].to_string()
+        );
     }
     eval_expr_no_parens2(&e)
 }
@@ -104,7 +114,9 @@ fn solve_part2(input: &Input) -> String {
 
 // Day-specific code to process text data into custom problem state
 fn parse_input_text(input_text: &str) -> Input {
-    Input { equations: input_text.lines().collect() }
+    Input {
+        equations: input_text.lines().collect(),
+    }
 }
 
 fn process_text(input_text: &str, processor: ProcessInputFunc, expected: &str) -> String {
@@ -126,8 +138,16 @@ fn test_day18_part1() {
     process_text("1 + (2 * 3) + (4 * (5 + 6))", solve_part1, "51");
     process_text("2 * 3 + (4 * 5)", solve_part1, "26");
     process_text("5 + (8 * 3 + 9 + 3 * 4 * 3)", solve_part1, "437");
-    process_text("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", solve_part1, "12240");
-    process_text("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", solve_part1, "13632");
+    process_text(
+        "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))",
+        solve_part1,
+        "12240",
+    );
+    process_text(
+        "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2",
+        solve_part1,
+        "13632",
+    );
 }
 
 #[test]
@@ -136,8 +156,16 @@ fn test_day18_part2() {
     process_text("1 + (2 * 3) + (4 * (5 + 6))", solve_part2, "51");
     process_text("2 * 3 + (4 * 5)", solve_part2, "46");
     process_text("5 + (8 * 3 + 9 + 3 * 4 * 3)", solve_part2, "1445");
-    process_text("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", solve_part2, "669060");
-    process_text("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", solve_part2, "23340");
+    process_text(
+        "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))",
+        solve_part2,
+        "669060",
+    );
+    process_text(
+        "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2",
+        solve_part2,
+        "23340",
+    );
 }
 
 fn main() {

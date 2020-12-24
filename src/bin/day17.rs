@@ -11,7 +11,7 @@ struct Input {
 }
 
 #[rustfmt::skip]
-static CELL_DELTAS_3D: &'static [Int4] = &[
+static CELL_DELTAS_3D: &[Int4] = &[
     Int4(-1,-1,-1, 0),
     Int4(-1,-1, 0, 0),
     Int4(-1,-1, 1, 0),
@@ -42,7 +42,7 @@ static CELL_DELTAS_3D: &'static [Int4] = &[
 ];
 
 #[rustfmt::skip]
-static CELL_DELTAS_4D: &'static [Int4] = &[
+static CELL_DELTAS_4D: &[Int4] = &[
     Int4(-1,-1,-1,-1),
     Int4(-1,-1, 0,-1),
     Int4(-1,-1, 1,-1),
@@ -132,26 +132,40 @@ static CELL_DELTAS_4D: &'static [Int4] = &[
 type ProcessInputFunc = fn(&Input) -> String;
 
 fn active_cells_after_n_steps(input: &Input, deltas: &[Int4], gen_count: u32) -> usize {
-    assert!(gen_count < 100, "coordinates are only 8 bit and are likely to overflow");
+    assert!(
+        gen_count < 100,
+        "coordinates are only 8 bit and are likely to overflow"
+    );
 
     let mut state = input.populated.clone();
-    let mut to_check:HashSet<Int4> = HashSet::with_capacity(state.len() * deltas.len());
+    let mut to_check: HashSet<Int4> = HashSet::with_capacity(state.len() * deltas.len());
     // Populate to_check from initial state. In the main loop, it's generated
     // alongside the new state.
     for cell in &state {
         to_check.insert(*cell);
         for delta in deltas {
-            to_check.insert(Int4(cell.0+delta.0, cell.1+delta.1, cell.2+delta.2, cell.3+delta.3));
+            to_check.insert(Int4(
+                cell.0 + delta.0,
+                cell.1 + delta.1,
+                cell.2 + delta.2,
+                cell.3 + delta.3,
+            ));
         }
     }
     for _ in 0..gen_count {
-        let mut next_state:HashSet<Int4> = HashSet::with_capacity(to_check.len());
-        let mut next_to_check:HashSet<Int4> = HashSet::with_capacity(next_state.len() * deltas.len());
+        let mut next_state: HashSet<Int4> = HashSet::with_capacity(to_check.len());
+        let mut next_to_check: HashSet<Int4> =
+            HashSet::with_capacity(next_state.len() * deltas.len());
         for cell in &to_check {
             // count live neighbors (stopping at 4, as that doesn't make a difference)
             let mut live_neighbor_count = 0;
             for delta in deltas {
-                if state.contains(&Int4(cell.0+delta.0, cell.1+delta.1, cell.2+delta.2, cell.3+delta.3)) {
+                if state.contains(&Int4(
+                    cell.0 + delta.0,
+                    cell.1 + delta.1,
+                    cell.2 + delta.2,
+                    cell.3 + delta.3,
+                )) {
                     live_neighbor_count += 1;
                     if live_neighbor_count > 3 {
                         break;
@@ -163,7 +177,12 @@ fn active_cells_after_n_steps(input: &Input, deltas: &[Int4], gen_count: u32) ->
                 next_state.insert(*cell);
                 next_to_check.insert(*cell);
                 for delta in deltas {
-                    next_to_check.insert(Int4(cell.0+delta.0, cell.1+delta.1, cell.2+delta.2, cell.3+delta.3));
+                    next_to_check.insert(Int4(
+                        cell.0 + delta.0,
+                        cell.1 + delta.1,
+                        cell.2 + delta.2,
+                        cell.3 + delta.3,
+                    ));
                 }
             }
         }
