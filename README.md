@@ -96,5 +96,7 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - I am not good at `String`/`str`/`&str`/`[u8]` manipulation in Rust :(. In part 2 especially, I'm creating new `String`s all over the place just to keep the borrow checker happy.
 
 ### [Day 19: Monster Messages](https://adventofcode.com/2020/day19)
+- Iterator::any() and all()
+- Escape curly braces in format strings with `{{` and `}}`
 
 ### [Day 20: Jurassic Jigsaw](https://adventofcode.com/2020/day/20)
