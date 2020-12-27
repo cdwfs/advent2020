@@ -100,3 +100,5 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - Escape curly braces in format strings with `{{` and `}}`
 
 ### [Day 20: Jurassic Jigsaw](https://adventofcode.com/2020/day/20)
+- Implementing `Display` trait for custom struct
+
