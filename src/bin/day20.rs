@@ -56,7 +56,7 @@ fn find_next_tile(
     grid: &mut Vec<TileInGrid>,
     dim: usize,
     unused_tile_ids: Vec<usize>,
-    tiles: &HashMap<usize, &Tile>,
+    tile_map: &HashMap<usize, &Tile>,
 ) -> bool {
     if unused_tile_ids.is_empty() {
         return true;
@@ -64,7 +64,7 @@ fn find_next_tile(
     let ty = grid.len() / dim;
     let tx = grid.len() % dim;
     for id in unused_tile_ids.iter() {
-        let tile = tiles.get(id).unwrap();
+        let tile = tile_map.get(id).unwrap();
         for up_face in 0..8 {
             let up_face = 7-up_face;
             let left_face = ROTL_LUT[up_face];
@@ -112,7 +112,7 @@ fn find_next_tile(
                         }
                     })
                     .collect();
-                if find_next_tile(grid, dim, unused_tile_ids, tiles) {
+                if find_next_tile(grid, dim, unused_tile_ids, tile_map) {
                     return true;
                 }
                 let _ = grid.pop();
@@ -122,22 +122,25 @@ fn find_next_tile(
     false
 }
 
-// concrete instance of a ProcessInputFunc implementation
-#[rustfmt::skip]
-fn solve_part1(input: &Input) -> String {
-    //for tile in &input.tiles {
-    //    println!("{}", tile);
-    //}
+fn find_valid_grid(input: &Input) -> Vec<TileInGrid> {
     let dim = input.dim;
-    let mut all_tiles:HashMap<usize,&Tile> = HashMap::with_capacity(input.tiles.len());
+    let mut tile_map: HashMap<usize, &Tile> = HashMap::with_capacity(input.tiles.len());
     let mut unused_tile_ids = Vec::with_capacity(input.tiles.len());
     for tile in input.tiles.iter() {
         unused_tile_ids.push(tile.id);
-        all_tiles.insert(tile.id, tile);
+        tile_map.insert(tile.id, tile);
     }
-    let mut grid:Vec<TileInGrid> = Vec::with_capacity(input.tiles.len());
-    let success = find_next_tile(&mut grid, dim, unused_tile_ids, &all_tiles);
+    let mut grid: Vec<TileInGrid> = Vec::with_capacity(input.tiles.len());
+    let success = find_next_tile(&mut grid, dim, unused_tile_ids, &tile_map);
     assert!(success);
+    grid
+}
+
+// concrete instance of a ProcessInputFunc implementation
+#[rustfmt::skip]
+fn solve_part1(input: &Input) -> String {
+    let grid = find_valid_grid(input);
+    let dim = input.dim;
     let upper_left_id = grid[0].id;
     let upper_right_id = grid[dim-1].id;
     let lower_left_id = grid[dim*(dim-1)].id;
