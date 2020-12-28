@@ -689,6 +689,6 @@ fn main() {
     );
     println!(
         "Part 2: {}",
-        process_file("inputs/input20.txt", solve_part2, "2519") // too high
+        process_file("inputs/input20.txt", solve_part2, "1964")
     );
 }
