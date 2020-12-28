@@ -150,9 +150,282 @@ fn solve_part1(input: &Input) -> String {
     (upper_left_id * upper_right_id * lower_left_id * lower_right_id).to_string()
 }
 
+fn assemble_image(input:&Input, tile_dim:usize, pix_dim:usize) -> Vec<u8> {
+    let grid = find_valid_grid(input);
+    // Copy non-border pixels into an image
+    let mut tile_map:HashMap<usize,&Tile> = HashMap::with_capacity(input.tiles.len());
+    for tile in input.tiles.iter() {
+        tile_map.insert(tile.id, tile);
+    }
+    let mut image:Vec<u8> = vec![b'?';pix_dim*pix_dim];
+    for (i_tile,tig) in grid.iter().enumerate() {
+        let ty = i_tile / tile_dim;
+        let tx = i_tile % tile_dim;
+        let tile_pixels = &tile_map.get(&tig.id).unwrap().pixels;
+        match tig.up_face {
+            0 => {
+                // No flip, no rotate
+                for y in 0..8 {
+                    for x in 0..8 {
+                        let dpx = 8*tx + x;
+                        let dpy = 8*ty + y;
+                        let spx = x+1;
+                        let spy = y+1;
+                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
+                    }
+                }
+            }
+            1 => {
+                // rotate left 90 degrees
+                for y in 0..8 {
+                    for x in 0..8 {
+                        let dpx = 8*tx + x;
+                        let dpy = 8*ty + y;
+                        let spx = 8-y;
+                        let spy = x+1;
+                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
+                    }
+                }
+            }
+            2 => {
+                // rotate left 180 degrees
+                for y in 0..8 {
+                    for x in 0..8 {
+                        let dpx = 8*tx + x;
+                        let dpy = 8*ty + y;
+                        let spx = 8-x;
+                        let spy = 8-y;
+                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
+                    }
+                }
+            }
+            3 => {
+                // rotate left 270 degrees
+                for y in 0..8 {
+                    for x in 0..8 {
+                        let dpx = 8*tx + x;
+                        let dpy = 8*ty + y;
+                        let spx = y+1;
+                        let spy = 8-x;
+                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
+                    }
+                }
+            }
+            4 => {
+                // Flip horizontally
+                for y in 0..8 {
+                    for x in 0..8 {
+                        let dpx = 8*tx + x;
+                        let dpy = 8*ty + y;
+                        let spx = 8-x;
+                        let spy = y+1;
+                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
+                    }
+                }
+            }
+            5 => {
+                // Flip horizontally, then rotate left 90 degrees
+                for y in 0..8 {
+                    for x in 0..8 {
+                        let dpx = 8*tx + x;
+                        let dpy = 8*ty + y;
+                        let spx = y+1;
+                        let spy = x+1;
+                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
+                    }
+                }
+            }
+            6 => {
+                // Flip horizontally, then rotate left 180 degrees
+                for y in 0..8 {
+                    for x in 0..8 {
+                        let dpx = 8*tx + x;
+                        let dpy = 8*ty + y;
+                        let spx = x+1;
+                        let spy = 8-y;
+                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
+                    }
+                }
+            }
+            7 => {
+                // Flip horizontally, then rotate left 270 degrees
+                for y in 0..8 {
+                    for x in 0..8 {
+                        let dpx = 8*tx + x;
+                        let dpy = 8*ty + y;
+                        let spx = 8-y;
+                        let spy = 8-x;
+                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
+                    }
+                }
+            }
+            _ => {
+                panic!("Invalid up face");
+            }
+        }
+    }
+    image
+}
+
 #[rustfmt::skip]
-fn solve_part2(_input: &Input) -> String {
-    "TBD".to_string()
+fn solve_part2(input: &Input) -> String {
+    let tile_dim = input.dim;
+    let pix_dim = tile_dim*(10-2);
+    let image = assemble_image(input, tile_dim, pix_dim);
+    // Search for sea monsters
+    const MONSTER_WIDTH:usize = 20;
+    const MONSTER_HEIGHT:usize = 3;
+    const MONSTER_OFFSET_COUNT:usize = 15;
+    let monster_offsets0:[usize;MONSTER_OFFSET_COUNT] = [18,
+        pix_dim, pix_dim+5, pix_dim+6, pix_dim+11, pix_dim+12, pix_dim+17, pix_dim+18, pix_dim+19,
+        2*pix_dim+1, 2*pix_dim+4, 2*pix_dim+7, 2+pix_dim+10, 2+pix_dim+13, 2*pix_dim+16];
+    let monster_offsets1:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim,
+        4*pix_dim, 5*pix_dim+1, 6*pix_dim+1, 7*pix_dim,
+        10*pix_dim, 11*pix_dim+1, 12*pix_dim+1, 13*pix_dim,
+        16*pix_dim, 17*pix_dim+1, 18*pix_dim+1, 18*pix_dim+2, 19*pix_dim+1,];
+    let monster_offsets2:[usize;MONSTER_OFFSET_COUNT] = [3, 6, 9, 12, 15, 19,
+        pix_dim, pix_dim+1, pix_dim+2, pix_dim+7, pix_dim+8, pix_dim+13, pix_dim+14, pix_dim+18,
+        2*pix_dim+1];
+    let monster_offsets3:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim, pix_dim+1, 2*pix_dim+1, 3*pix_dim+2,
+        6*pix_dim+2, 7*pix_dim+1, 8*pix_dim+1, 9+pix_dim+2,
+        12*pix_dim+2, 13*pix_dim+1, 14+pix_dim+1, 15*pix_dim+2,
+        18*pix_dim+2, 19*pix_dim+1];
+    let monster_offsets4:[usize;MONSTER_OFFSET_COUNT] = [1,
+        pix_dim, pix_dim+1, pix_dim+2, pix_dim+7, pix_dim+8, pix_dim+13, pix_dim+14, pix_dim+18,
+        2*pix_dim+3, 2*pix_dim+6, 2*pix_dim+9, 2*pix_dim+12, 2*pix_dim+15, 2*pix_dim+19,];
+    let monster_offsets5:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim+2,
+        4*pix_dim+2, 5*pix_dim+1, 6*pix_dim+1, 7*pix_dim+2,
+        10*pix_dim+2, 11*pix_dim+1, 12*pix_dim+1, 13*pix_dim+2,
+        16*pix_dim+2, 17*pix_dim+1, 18*pix_dim, 18*pix_dim+1, 19*pix_dim+1,];
+    let monster_offsets6:[usize;MONSTER_OFFSET_COUNT] = [1, 4, 7, 10, 13, 16,
+        pix_dim, pix_dim+5, pix_dim+6, pix_dim+11, pix_dim+12, pix_dim+17, pix_dim+18, pix_dim+19,
+        2*pix_dim+18,];
+    let monster_offsets7:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim+1, pix_dim+2, 2*pix_dim+1, 3*pix_dim,
+        6*pix_dim, 7*pix_dim+1, 8*pix_dim+1, 9+pix_dim,
+        12*pix_dim, 13*pix_dim+1, 14+pix_dim+1, 15*pix_dim,
+        18*pix_dim, 19*pix_dim+1];
+    let mut monster_count = 0;
+    // Check for horizontal monsters
+    for py in 0..pix_dim-MONSTER_HEIGHT {
+        for px in 0..pix_dim-MONSTER_WIDTH {
+            let pi = py*pix_dim+px;
+            {
+                let mut found = true;
+                for offset in monster_offsets0.iter() {
+                    if image[pi+offset] != b'#' {
+                        found = false;
+                        break;
+                    }
+                }
+                if found {
+                    monster_count += 1;
+                    println!("Found monster at [{},{}] orientation 0", px,py);
+                }
+            }
+            {
+                let mut found = true;
+                for offset in monster_offsets2.iter() {
+                    if image[pi+offset] != b'#' {
+                        found = false;
+                        break;
+                    }
+                }
+                if found {
+                    monster_count += 1;
+                    println!("Found monster at [{},{}] orientation 2", px,py);
+                }
+            }
+            {
+                let mut found = true;
+                for offset in monster_offsets4.iter() {
+                    if image[pi+offset] != b'#' {
+                        found = false;
+                        break;
+                    }
+                }
+                if found {
+                    monster_count += 1;
+                    println!("Found monster at [{},{}] orientation 4", px,py);
+                }
+            }
+            {
+                let mut found = true;
+                for offset in monster_offsets6.iter() {
+                    if image[pi+offset] != b'#' {
+                        found = false;
+                        break;
+                    }
+                }
+                if found {
+                    monster_count += 1;
+                    println!("Found monster at [{},{}] orientation 6", px,py);
+                }
+            }
+        }
+    }
+    // Check for vertical monsters if we haven't found any yet
+    for py in 0..pix_dim-MONSTER_WIDTH {
+        for px in 0..pix_dim-MONSTER_HEIGHT {
+            let pi = py*pix_dim+px;
+            {
+                let mut found = true;
+                for offset in monster_offsets1.iter() {
+                    if image[pi+offset] != b'#' {
+                        found = false;
+                        break;
+                    }
+                }
+                if found {
+                    monster_count += 1;
+                    println!("Found monster at [{},{}] orientation 1", px,py);
+                }
+            }
+            {
+                let mut found = true;
+                for offset in monster_offsets3.iter() {
+                    if image[pi+offset] != b'#' {
+                        found = false;
+                        break;
+                    }
+                }
+                if found {
+                    monster_count += 1;
+                    println!("Found monster at [{},{}] orientation 3", px,py);
+                }
+            }
+            {
+                let mut found = true;
+                for offset in monster_offsets5.iter() {
+                    if image[pi+offset] != b'#' {
+                        found = false;
+                        break;
+                    }
+                }
+                if found {
+                    monster_count += 1;
+                    println!("Found monster at [{},{}] orientation 5", px,py);
+                }
+            }
+            {
+                let mut found = true;
+                for offset in monster_offsets7.iter() {
+                    if image[pi+offset] != b'#' {
+                        found = false;
+                        break;
+                    }
+                }
+                if found {
+                    monster_count += 1;
+                    println!("Found monster at [{},{}] orientation 7", px,py);
+                }
+            }
+        }
+    }
+    assert_ne!(0, monster_count, "Didn't find any monsters :(");
+
+    // Count non-sea-monster roughness
+    let hash_count = image.iter().fold(0, |count,p| if *p == b'#' {count + 1} else {count});
+    (hash_count - MONSTER_OFFSET_COUNT*monster_count).to_string()
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -368,9 +641,40 @@ fn test_day20_part1() {
     process_text(_TEST_INPUT1, solve_part1, "20899048083289");
 }
 
+const _IMAGE_OUTPUT1:&str = "\
+.#.#..#.##...#.##..#####\
+###....#.#....#..#......\
+##.##.###.#.#..######...\
+###.#####...#.#####.#..#\
+##.#....#.##.####...#.##\
+...########.#....#####.#\
+....#..#...##..#.#.###..\
+.####...#..#.....#......\
+#..#.##..#..###.#.##....\
+#.####..#.####.#.#.###..\
+###.#.#...#.######.#..##\
+#.####....##..########.#\
+##..##.#...#...#.#.#.#..\
+...#..#..#.#.##..###.###\
+.#.#....#.##.#...###.##.\
+###.#...#..#.##.######..\
+.#.#.###.##.##.#..#.##..\
+.####.###.#...###.#..#.#\
+..#.#..#..#.#.#.####.###\
+#..####...#.#.#.###.###.\
+#####..#####...###....##\
+#.##..#..#...#..####...#\
+.#.###..##..##..####.##.\
+...###...##...#...#..###";
+
 #[test]
 fn test_day20_part2() {
-    process_text(_TEST_INPUT1, solve_part2, "12");
+    let input = parse_input_text(_TEST_INPUT1);
+    let tile_dim = input.dim;
+    let pix_dim = tile_dim*(10-2);
+    let image = assemble_image(&input, tile_dim, pix_dim);
+    assert_eq!(_IMAGE_OUTPUT1, String::from_utf8(image).unwrap());
+    process_text(_TEST_INPUT1, solve_part2, "273");
 }
 
 fn main() {
@@ -380,6 +684,6 @@ fn main() {
     );
     println!(
         "Part 2: {}",
-        process_file("inputs/input20.txt", solve_part2, "273")
+        process_file("inputs/input20.txt", solve_part2, "2519") // too high
     );
 }
