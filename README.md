@@ -101,4 +101,5 @@ A list of the puzzles, and what new language/tool features I learned each day:
 
 ### [Day 20: Jurassic Jigsaw](https://adventofcode.com/2020/day/20)
 - Implementing `Display` trait for custom struct
+- Manually advancing an iterator mid-loop, using `next()` and `while let Some(_) = iter.next()`
 
