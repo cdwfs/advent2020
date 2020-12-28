@@ -37,6 +37,7 @@ impl fmt::Display for Tile {
 #[derive(Debug)]
 struct TileInGrid {
     id: usize,
+    up_face: usize,
     right_rev_mask: u16,
     down_rev_mask: u16,
 }
@@ -99,6 +100,7 @@ fn find_next_tile(
                 let down_rev_mask = tile.edges[SIDE_LUT[up_face]];
                 grid.push(TileInGrid {
                     id: *id,
+                    up_face,
                     right_rev_mask,
                     down_rev_mask,
                 });
