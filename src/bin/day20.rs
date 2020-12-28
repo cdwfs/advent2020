@@ -1,4 +1,5 @@
 use regex::Regex;
+use std::collections::HashSet;
 use std::fmt;
 use std::fs;
 
@@ -27,12 +28,14 @@ impl fmt::Display for Tile {
 #[derive(Debug)]
 struct TileInGrid {
     id:u16,
-    right_mask: u16,
-    down_mask: u16,
+    right_rev_mask: u16,
+    down_rev_mask: u16,
 }
 #[derive(Debug)]
 struct Input {
     tiles: Vec<Tile>,
+    width_in_tiles:u64,
+    height_in_tiles:u64,
 }
 
 // Generic signature for "process problem state to get an answer"
@@ -41,8 +44,12 @@ type ProcessInputFunc = fn(&Input) -> String;
 // concrete instance of a ProcessInputFunc implementation
 #[rustfmt::skip]
 fn solve_part1(input: &Input) -> String {
-    for tile in &input.tiles {
-        println!("{}", tile);
+    //for tile in &input.tiles {
+    //    println!("{}", tile);
+    //}
+    let mut unused_tiles = HashSet::with_capacity(input.tiles.len());
+    for tile in input.tiles.iter() {
+        unused_tiles.insert(tile.id);
     }
     "TBD".to_string()
 }
@@ -117,7 +124,8 @@ fn parse_input_text(input_text: &str) -> Input {
         }
         tiles.push(Tile{id,pixels:p,edges});
     }
-    Input { tiles }
+    let width_in_tiles = (tiles.len() as f32).sqrt() as u64;
+    Input { tiles, width_in_tiles, height_in_tiles:width_in_tiles }
 }
 
 fn process_text(input_text: &str, processor: ProcessInputFunc, expected: &str) -> String {
