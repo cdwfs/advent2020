@@ -67,7 +67,7 @@ fn find_next_tile(
     for id in unused_tile_ids.iter() {
         let tile = tile_map.get(id).unwrap();
         for up_face in 0..8 {
-            let up_face = 7-up_face;
+            let up_face = 7 - up_face;
             let left_face = ROTL_LUT[up_face];
             let mut is_match = false;
             if tx > 0 && ty > 0 {
@@ -150,57 +150,65 @@ fn solve_part1(input: &Input) -> String {
     (upper_left_id * upper_right_id * lower_left_id * lower_right_id).to_string()
 }
 
-fn assemble_image(input:&Input, tile_dim:usize, pix_dim:usize) -> Vec<u8> {
+fn assemble_image(input: &Input, tile_dim: usize, pix_dim: usize) -> Vec<u8> {
     let grid = find_valid_grid(input);
     // Copy non-border pixels into an image
-    let mut tile_map:HashMap<usize,&Tile> = HashMap::with_capacity(input.tiles.len());
+    let mut tile_map: HashMap<usize, &Tile> = HashMap::with_capacity(input.tiles.len());
     for tile in input.tiles.iter() {
         tile_map.insert(tile.id, tile);
     }
-    let mut image:Vec<u8> = vec![b'?';pix_dim*pix_dim];
-    for (i_tile,tig) in grid.iter().enumerate() {
+    let mut image: Vec<u8> = vec![b'?'; pix_dim * pix_dim];
+    for (i_tile, tig) in grid.iter().enumerate() {
         let ty = i_tile / tile_dim;
         let tx = i_tile % tile_dim;
         let tile_pixels = &tile_map.get(&tig.id).unwrap().pixels;
         let final_pixels = match tig.up_face {
             0 => Vec::from(*tile_pixels),
-            1 => rotr90_image(&rotr90_image(&rotr90_image(tile_pixels, 10, 10), 10, 10), 10, 10),
+            1 => rotr90_image(
+                &rotr90_image(&rotr90_image(tile_pixels, 10, 10), 10, 10),
+                10,
+                10,
+            ),
             2 => rotr90_image(&rotr90_image(tile_pixels, 10, 10), 10, 10),
             3 => rotr90_image(tile_pixels, 10, 10),
             4 => fliph_image(tile_pixels, 10, 10),
             5 => fliph_image(&rotr90_image(tile_pixels, 10, 10), 10, 10),
-            6 => fliph_image(&rotr90_image(&rotr90_image(tile_pixels, 10, 10), 10, 10), 10, 10),
+            6 => fliph_image(
+                &rotr90_image(&rotr90_image(tile_pixels, 10, 10), 10, 10),
+                10,
+                10,
+            ),
             7 => rotr90_image(&fliph_image(tile_pixels, 10, 10), 10, 10),
-            _ => panic!("Invalid up face")
+            _ => panic!("Invalid up face"),
         };
         for y in 0..8 {
-            let dpy = 8*ty + y;
-            let spy = y+1;
+            let dpy = 8 * ty + y;
+            let spy = y + 1;
             for x in 0..8 {
-               let dpx = 8*tx + x;
-               let spx = x+1;
-               image[pix_dim*dpy+dpx] = final_pixels[10*spy+spx];
-           }
+                let dpx = 8 * tx + x;
+                let spx = x + 1;
+                image[pix_dim * dpy + dpx] = final_pixels[10 * spy + spx];
+            }
         }
     }
     image
 }
 
 // note: output image will have dimensions [height,width]
-fn rotr90_image(image:&[u8], width:usize, height:usize) -> Vec<u8> {
-    let mut output = vec![b'?';image.len()];
+fn rotr90_image(image: &[u8], width: usize, height: usize) -> Vec<u8> {
+    let mut output = vec![b'?'; image.len()];
     for sy in 0..height {
         for sx in 0..width {
-            output[sx*height+(height-1-sy)] = image[sy*width+sx];
+            output[sx * height + (height - 1 - sy)] = image[sy * width + sx];
         }
     }
     output
 }
-fn fliph_image(image:&[u8], width:usize, height:usize) -> Vec<u8> {
-    let mut output = vec![b'?';image.len()];
+fn fliph_image(image: &[u8], width: usize, height: usize) -> Vec<u8> {
+    let mut output = vec![b'?'; image.len()];
     for sy in 0..height {
         for sx in 0..width {
-            output[sy*width+(width-1-sx)] = image[sy*width+sx];
+            output[sy * width + (width - 1 - sx)] = image[sy * width + sx];
         }
     }
     output
@@ -580,7 +588,7 @@ fn test_day20_part1() {
     process_text(_TEST_INPUT1, solve_part1, "20899048083289");
 }
 
-const _IMAGE_OUTPUT1:&str = "\
+const _IMAGE_OUTPUT1: &str = "\
 .#.#..#.##...#.##..#####\
 ###....#.#....#..#......\
 ##.##.###.#.#..######...\
@@ -606,23 +614,23 @@ const _IMAGE_OUTPUT1:&str = "\
 .#.###..##..##..####.##.\
 ...###...##...#...#..###";
 
-const _ROT_INPUT:&str = "\
+const _ROT_INPUT: &str = "\
 .....\
 .#.#.\
 ...#.\
 #....";
-const _ROT_OUTPUT90:&str = "\
+const _ROT_OUTPUT90: &str = "\
 #...\
 ..#.\
 ....\
 .##.\
 ....";
-const _ROT_OUTPUT180:&str = "\
+const _ROT_OUTPUT180: &str = "\
 ....#\
 .#...\
 .#.#.\
 .....";
-const _ROT_OUTPUT270:&str = "\
+const _ROT_OUTPUT270: &str = "\
 ....\
 .##.\
 ....\
@@ -641,12 +649,12 @@ fn test_day20_rotr_image() {
     assert_eq!(_ROT_INPUT.as_bytes(), rot360);
 }
 
-const _FLIPH_INPUT:&str = "\
+const _FLIPH_INPUT: &str = "\
 #.##.\
 .##.#\
 #..#.\
 .#..#";
-const _FLIPH_OUTPUT:&str = "\
+const _FLIPH_OUTPUT: &str = "\
 .##.#\
 #.##.\
 .#..#\
@@ -664,7 +672,7 @@ fn test_day20_fliph_image() {
 fn test_day20_assemble_image() {
     let input = parse_input_text(_TEST_INPUT1);
     let tile_dim = input.dim;
-    let pix_dim = tile_dim*(10-2);
+    let pix_dim = tile_dim * (10 - 2);
     let image = assemble_image(&input, tile_dim, pix_dim);
     assert_eq!(_IMAGE_OUTPUT1, String::from_utf8(image).unwrap());
 }
