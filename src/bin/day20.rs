@@ -50,7 +50,7 @@ struct Input {
 type ProcessInputFunc = fn(&Input) -> String;
 
 const SIDE_LUT: [usize; 8] = [6, 5, 4, 7, 2, 1, 0, 3];
-const ROTR_LUT: [usize; 8] = [1, 2, 3, 0, 5, 6, 7, 4];
+const ROTL_LUT: [usize; 8] = [3, 0, 1, 2, 7, 4, 5, 6];
 
 fn find_next_tile(
     grid: &mut Vec<TileInGrid>,
@@ -65,8 +65,9 @@ fn find_next_tile(
     let tx = grid.len() % dim;
     for id in unused_tile_ids.iter() {
         let tile = tiles.get(id).unwrap();
-        for left_face in 0..8 {
-            let up_face = ROTR_LUT[left_face];
+        for up_face in 0..8 {
+            let up_face = 7-up_face;
+            let left_face = ROTL_LUT[up_face];
             let mut is_match = false;
             if tx > 0 && ty > 0 {
                 // interior tiles need to match both the tile above and to their left
