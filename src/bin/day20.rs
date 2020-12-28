@@ -162,109 +162,48 @@ fn assemble_image(input:&Input, tile_dim:usize, pix_dim:usize) -> Vec<u8> {
         let ty = i_tile / tile_dim;
         let tx = i_tile % tile_dim;
         let tile_pixels = &tile_map.get(&tig.id).unwrap().pixels;
-        match tig.up_face {
-            0 => {
-                // No flip, no rotate
-                for y in 0..8 {
-                    for x in 0..8 {
-                        let dpx = 8*tx + x;
-                        let dpy = 8*ty + y;
-                        let spx = x+1;
-                        let spy = y+1;
-                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
-                    }
-                }
-            }
-            1 => {
-                // rotate left 90 degrees
-                for y in 0..8 {
-                    for x in 0..8 {
-                        let dpx = 8*tx + x;
-                        let dpy = 8*ty + y;
-                        let spx = 8-y;
-                        let spy = x+1;
-                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
-                    }
-                }
-            }
-            2 => {
-                // rotate left 180 degrees
-                for y in 0..8 {
-                    for x in 0..8 {
-                        let dpx = 8*tx + x;
-                        let dpy = 8*ty + y;
-                        let spx = 8-x;
-                        let spy = 8-y;
-                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
-                    }
-                }
-            }
-            3 => {
-                // rotate left 270 degrees
-                for y in 0..8 {
-                    for x in 0..8 {
-                        let dpx = 8*tx + x;
-                        let dpy = 8*ty + y;
-                        let spx = y+1;
-                        let spy = 8-x;
-                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
-                    }
-                }
-            }
-            4 => {
-                // Flip horizontally
-                for y in 0..8 {
-                    for x in 0..8 {
-                        let dpx = 8*tx + x;
-                        let dpy = 8*ty + y;
-                        let spx = 8-x;
-                        let spy = y+1;
-                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
-                    }
-                }
-            }
-            5 => {
-                // Flip horizontally, then rotate left 90 degrees
-                for y in 0..8 {
-                    for x in 0..8 {
-                        let dpx = 8*tx + x;
-                        let dpy = 8*ty + y;
-                        let spx = y+1;
-                        let spy = x+1;
-                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
-                    }
-                }
-            }
-            6 => {
-                // Flip horizontally, then rotate left 180 degrees
-                for y in 0..8 {
-                    for x in 0..8 {
-                        let dpx = 8*tx + x;
-                        let dpy = 8*ty + y;
-                        let spx = x+1;
-                        let spy = 8-y;
-                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
-                    }
-                }
-            }
-            7 => {
-                // Flip horizontally, then rotate left 270 degrees
-                for y in 0..8 {
-                    for x in 0..8 {
-                        let dpx = 8*tx + x;
-                        let dpy = 8*ty + y;
-                        let spx = 8-y;
-                        let spy = 8-x;
-                        image[pix_dim*dpy+dpx] = tile_pixels[10*spy+spx];
-                    }
-                }
-            }
-            _ => {
-                panic!("Invalid up face");
-            }
+        let final_pixels = match tig.up_face {
+            0 => Vec::from(*tile_pixels),
+            1 => rotr90_image(&rotr90_image(&rotr90_image(tile_pixels, 10, 10), 10, 10), 10, 10),
+            2 => rotr90_image(&rotr90_image(tile_pixels, 10, 10), 10, 10),
+            3 => rotr90_image(tile_pixels, 10, 10),
+            4 => fliph_image(tile_pixels, 10, 10),
+            5 => fliph_image(&rotr90_image(tile_pixels, 10, 10), 10, 10),
+            6 => fliph_image(&rotr90_image(&rotr90_image(tile_pixels, 10, 10), 10, 10), 10, 10),
+            7 => rotr90_image(&fliph_image(tile_pixels, 10, 10), 10, 10),
+            _ => panic!("Invalid up face")
+        };
+        for y in 0..8 {
+            let dpy = 8*ty + y;
+            let spy = y+1;
+            for x in 0..8 {
+               let dpx = 8*tx + x;
+               let spx = x+1;
+               image[pix_dim*dpy+dpx] = final_pixels[10*spy+spx];
+           }
         }
     }
     image
+}
+
+// note: output image will have dimensions [height,width]
+fn rotr90_image(image:&[u8], width:usize, height:usize) -> Vec<u8> {
+    let mut output = vec![b'?';image.len()];
+    for sy in 0..height {
+        for sx in 0..width {
+            output[sx*height+(height-1-sy)] = image[sy*width+sx];
+        }
+    }
+    output
+}
+fn fliph_image(image:&[u8], width:usize, height:usize) -> Vec<u8> {
+    let mut output = vec![b'?';image.len()];
+    for sy in 0..height {
+        for sx in 0..width {
+            output[sy*width+(width-1-sx)] = image[sy*width+sx];
+        }
+    }
+    output
 }
 
 #[rustfmt::skip]
@@ -667,13 +606,71 @@ const _IMAGE_OUTPUT1:&str = "\
 .#.###..##..##..####.##.\
 ...###...##...#...#..###";
 
+const _ROT_INPUT:&str = "\
+.....\
+.#.#.\
+...#.\
+#....";
+const _ROT_OUTPUT90:&str = "\
+#...\
+..#.\
+....\
+.##.\
+....";
+const _ROT_OUTPUT180:&str = "\
+....#\
+.#...\
+.#.#.\
+.....";
+const _ROT_OUTPUT270:&str = "\
+....\
+.##.\
+....\
+.#..\
+...#";
+
 #[test]
-fn test_day20_part2() {
+fn test_day20_rotr_image() {
+    let rot90 = rotr90_image(_ROT_INPUT.as_bytes(), 5, 4);
+    let rot180 = rotr90_image(&rot90, 4, 5);
+    let rot270 = rotr90_image(&rot180, 5, 4);
+    let rot360 = rotr90_image(&rot270, 4, 5);
+    assert_eq!(_ROT_OUTPUT90.as_bytes(), rot90);
+    assert_eq!(_ROT_OUTPUT180.as_bytes(), rot180);
+    assert_eq!(_ROT_OUTPUT270.as_bytes(), rot270);
+    assert_eq!(_ROT_INPUT.as_bytes(), rot360);
+}
+
+const _FLIPH_INPUT:&str = "\
+#.##.\
+.##.#\
+#..#.\
+.#..#";
+const _FLIPH_OUTPUT:&str = "\
+.##.#\
+#.##.\
+.#..#\
+#..#.";
+
+#[test]
+fn test_day20_fliph_image() {
+    let flip1 = fliph_image(_FLIPH_INPUT.as_bytes(), 5, 4);
+    let flip2 = fliph_image(&flip1, 5, 4);
+    assert_eq!(_FLIPH_OUTPUT.as_bytes(), flip1);
+    assert_eq!(_FLIPH_INPUT.as_bytes(), flip2);
+}
+
+#[test]
+fn test_day20_assemble_image() {
     let input = parse_input_text(_TEST_INPUT1);
     let tile_dim = input.dim;
     let pix_dim = tile_dim*(10-2);
     let image = assemble_image(&input, tile_dim, pix_dim);
     assert_eq!(_IMAGE_OUTPUT1, String::from_utf8(image).unwrap());
+}
+
+#[test]
+fn test_day20_part2() {
     process_text(_TEST_INPUT1, solve_part2, "273");
 }
 
