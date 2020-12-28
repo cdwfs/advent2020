@@ -225,32 +225,32 @@ fn solve_part2(input: &Input) -> String {
     const MONSTER_OFFSET_COUNT:usize = 15;
     let monster_offsets0:[usize;MONSTER_OFFSET_COUNT] = [18,
         pix_dim, pix_dim+5, pix_dim+6, pix_dim+11, pix_dim+12, pix_dim+17, pix_dim+18, pix_dim+19,
-        2*pix_dim+1, 2*pix_dim+4, 2*pix_dim+7, 2+pix_dim+10, 2+pix_dim+13, 2*pix_dim+16];
+        2*pix_dim+1, 2*pix_dim+4, 2*pix_dim+7, 2*pix_dim+10, 2*pix_dim+13, 2*pix_dim+16];
     let monster_offsets1:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim,
         4*pix_dim, 5*pix_dim+1, 6*pix_dim+1, 7*pix_dim,
         10*pix_dim, 11*pix_dim+1, 12*pix_dim+1, 13*pix_dim,
         16*pix_dim, 17*pix_dim+1, 18*pix_dim+1, 18*pix_dim+2, 19*pix_dim+1,];
-    let monster_offsets2:[usize;MONSTER_OFFSET_COUNT] = [3, 6, 9, 12, 15, 19,
-        pix_dim, pix_dim+1, pix_dim+2, pix_dim+7, pix_dim+8, pix_dim+13, pix_dim+14, pix_dim+18,
+    let monster_offsets2:[usize;MONSTER_OFFSET_COUNT] = [3, 6, 9, 12, 15, 18,
+        pix_dim, pix_dim+1, pix_dim+2, pix_dim+7, pix_dim+8, pix_dim+13, pix_dim+14, pix_dim+19,
         2*pix_dim+1];
     let monster_offsets3:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim, pix_dim+1, 2*pix_dim+1, 3*pix_dim+2,
-        6*pix_dim+2, 7*pix_dim+1, 8*pix_dim+1, 9+pix_dim+2,
-        12*pix_dim+2, 13*pix_dim+1, 14+pix_dim+1, 15*pix_dim+2,
+        6*pix_dim+2, 7*pix_dim+1, 8*pix_dim+1, 9*pix_dim+2,
+        12*pix_dim+2, 13*pix_dim+1, 14*pix_dim+1, 15*pix_dim+2,
         18*pix_dim+2, 19*pix_dim+1];
     let monster_offsets4:[usize;MONSTER_OFFSET_COUNT] = [1,
-        pix_dim, pix_dim+1, pix_dim+2, pix_dim+7, pix_dim+8, pix_dim+13, pix_dim+14, pix_dim+18,
-        2*pix_dim+3, 2*pix_dim+6, 2*pix_dim+9, 2*pix_dim+12, 2*pix_dim+15, 2*pix_dim+19,];
-    let monster_offsets5:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim+2,
-        4*pix_dim+2, 5*pix_dim+1, 6*pix_dim+1, 7*pix_dim+2,
-        10*pix_dim+2, 11*pix_dim+1, 12*pix_dim+1, 13*pix_dim+2,
-        16*pix_dim+2, 17*pix_dim+1, 18*pix_dim, 18*pix_dim+1, 19*pix_dim+1,];
+        pix_dim, pix_dim+1, pix_dim+2, pix_dim+7, pix_dim+8, pix_dim+13, pix_dim+14, pix_dim+19,
+        2*pix_dim+3, 2*pix_dim+6, 2*pix_dim+9, 2*pix_dim+12, 2*pix_dim+15, 2*pix_dim+18,];
+    let monster_offsets5:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim+1, pix_dim+2, 2*pix_dim+1, 3*pix_dim,
+        6*pix_dim, 7*pix_dim+1, 8*pix_dim+1, 9*pix_dim,
+        12*pix_dim, 13*pix_dim+1, 14*pix_dim+1, 15*pix_dim,
+        18*pix_dim, 19*pix_dim+1];
     let monster_offsets6:[usize;MONSTER_OFFSET_COUNT] = [1, 4, 7, 10, 13, 16,
         pix_dim, pix_dim+5, pix_dim+6, pix_dim+11, pix_dim+12, pix_dim+17, pix_dim+18, pix_dim+19,
         2*pix_dim+18,];
-    let monster_offsets7:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim+1, pix_dim+2, 2*pix_dim+1, 3*pix_dim,
-        6*pix_dim, 7*pix_dim+1, 8*pix_dim+1, 9+pix_dim,
-        12*pix_dim, 13*pix_dim+1, 14+pix_dim+1, 15*pix_dim,
-        18*pix_dim, 19*pix_dim+1];
+    let monster_offsets7:[usize;MONSTER_OFFSET_COUNT] = [1, pix_dim+2,
+        4*pix_dim+2, 5*pix_dim+1, 6*pix_dim+1, 7*pix_dim+2,
+        10*pix_dim+2, 11*pix_dim+1, 12*pix_dim+1, 13*pix_dim+2,
+        16*pix_dim+2, 17*pix_dim+1, 18*pix_dim, 18*pix_dim+1, 19*pix_dim+1,];
     let mut monster_count = 0;
     // Check for horizontal monsters
     for py in 0..pix_dim-MONSTER_HEIGHT {
