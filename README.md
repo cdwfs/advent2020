@@ -103,3 +103,8 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - Implementing `Display` trait for custom struct
 - Manually advancing an iterator mid-loop, using `next()` and `while let Some(_) = iter.next()`
 
+### [Day 21: Allergen Assessment](https://adventofcode.com/2020/day/21)
+- `collect()` doesn't seem to work on iterators over `&str`, which is unfortunate.
+- `sort_by()` on collections, for custom sort functions
+- I tried to go more functional this time where possible.
+
