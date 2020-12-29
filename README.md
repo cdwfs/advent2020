@@ -108,3 +108,6 @@ A list of the puzzles, and what new language/tool features I learned each day:
 - `sort_by()` on collections, for custom sort functions
 - I tried to go more functional this time where possible.
 
+### [Day 22: Crab Combat](https://adventofcode.com/2020/day/22)
+- `DefaultHasher` for a 64-bit hash of arbitrary bytes (even provided incrementally). Handy!
+
