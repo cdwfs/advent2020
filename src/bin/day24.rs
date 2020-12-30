@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use std::fs;
 
 // TODO: a trait, to mark this as "Thing That Is The Result Of Processing Input"
-#[derive(Clone,Copy,Debug)]
+#[derive(Clone, Copy, Debug)]
 enum HexDir {
     E,
     SE,
@@ -13,25 +13,25 @@ enum HexDir {
 }
 #[derive(Debug)]
 struct Input {
-    paths:Vec<Vec<HexDir>>,
+    paths: Vec<Vec<HexDir>>,
 }
 
 // Generic signature for "process problem state to get an answer"
 type ProcessInputFunc = fn(&Input) -> String;
 
-fn get_black_tiles(input: &Input) -> HashSet<(i16,i16)> {
+fn get_black_tiles(input: &Input) -> HashSet<(i16, i16)> {
     let mut black_tiles = HashSet::with_capacity(input.paths.len());
     for path in input.paths.iter() {
         // axial coordinates! https://www.redblobgames.com/grids/hexagons/#coordinates
-        let mut tile = (0,0);
+        let mut tile = (0, 0);
         for dir in path.iter() {
             tile = match *dir {
-                HexDir::E  => (tile.0+1, tile.1),
-                HexDir::W  => (tile.0-1, tile.1),
-                HexDir::NE => (tile.0+1, tile.1-1),
-                HexDir::NW => (tile.0,   tile.1-1),
-                HexDir::SE => (tile.0,   tile.1+1),
-                HexDir::SW => (tile.0-1, tile.1+1),
+                HexDir::E => (tile.0 + 1, tile.1),
+                HexDir::W => (tile.0 - 1, tile.1),
+                HexDir::NE => (tile.0 + 1, tile.1 - 1),
+                HexDir::NW => (tile.0, tile.1 - 1),
+                HexDir::SE => (tile.0, tile.1 + 1),
+                HexDir::SW => (tile.0 - 1, tile.1 + 1),
             }
         }
         if black_tiles.contains(&tile) {
@@ -49,14 +49,14 @@ fn solve_part1(input: &Input) -> String {
     get_black_tiles(input).len().to_string()
 }
 
-fn tile_neighbors(tile:&(i16,i16)) -> [(i16,i16);6] {
+fn tile_neighbors(tile: &(i16, i16)) -> [(i16, i16); 6] {
     [
-        (tile.0+1,tile.1), // E
-        (tile.0-1,tile.1), // W
-        (tile.0+1,tile.1-1), // NE
-        (tile.0,  tile.1-1), // NW
-        (tile.0,  tile.1+1), // SE
-        (tile.0-1,tile.1+1), // SW
+        (tile.0 + 1, tile.1),     // E
+        (tile.0 - 1, tile.1),     // W
+        (tile.0 + 1, tile.1 - 1), // NE
+        (tile.0, tile.1 - 1),     // NW
+        (tile.0, tile.1 + 1),     // SE
+        (tile.0 - 1, tile.1 + 1), // SW
     ]
 }
 

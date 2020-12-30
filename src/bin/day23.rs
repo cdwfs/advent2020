@@ -9,21 +9,21 @@ struct Input {
 // Generic signature for "process problem state to get an answer"
 type ProcessInputFunc = fn(&Input) -> String;
 
-fn dec_and_wrap(x:u32, radix:u32) -> u32 {
-    let x = x + radix-1; // shift to [0..radix), with an extra radix to keep the value >= 0
-    let x = x-1; // decrement
+fn dec_and_wrap(x: u32, radix: u32) -> u32 {
+    let x = x + radix - 1; // shift to [0..radix), with an extra radix to keep the value >= 0
+    let x = x - 1; // decrement
     let x = x % radix; // wrap around
-    x+1 // shift back to [1..9]
+    x + 1 // shift back to [1..9]
 }
 
-fn make_a_move(next_cups:&mut Vec<u32>, current_cup: u32) -> u32 {
+fn make_a_move(next_cups: &mut Vec<u32>, current_cup: u32) -> u32 {
     let held1 = next_cups[current_cup as usize];
     let held2 = next_cups[held1 as usize];
     let held3 = next_cups[held2 as usize];
     next_cups[current_cup as usize] = next_cups[held3 as usize];
-    let mut dest_cup = dec_and_wrap(current_cup, (next_cups.len()-1) as u32);
+    let mut dest_cup = dec_and_wrap(current_cup, (next_cups.len() - 1) as u32);
     while dest_cup == held1 || dest_cup == held2 || dest_cup == held3 {
-        dest_cup = dec_and_wrap(dest_cup, (next_cups.len()-1) as u32);
+        dest_cup = dec_and_wrap(dest_cup, (next_cups.len() - 1) as u32);
     }
     let old_next = next_cups[dest_cup as usize];
     next_cups[dest_cup as usize] = held1;

@@ -2,13 +2,13 @@ use std::fs;
 
 #[derive(Debug)]
 struct Input {
-    public_keys:[u64;2],
+    public_keys: [u64; 2],
 }
 
 // Generic signature for "process problem state to get an answer"
 type ProcessInputFunc = fn(&Input) -> String;
 
-fn get_loop_size(public_key:u64) -> u64 {
+fn get_loop_size(public_key: u64) -> u64 {
     let mut val = 1;
     let subject_number = 7;
     let mut loop_size = 0;
@@ -19,7 +19,7 @@ fn get_loop_size(public_key:u64) -> u64 {
     loop_size
 }
 
-fn get_encryption_key(subject_number:u64, loop_size:u64) -> u64 {
+fn get_encryption_key(subject_number: u64, loop_size: u64) -> u64 {
     let mut val = 1;
     for _ in 0..loop_size {
         val = (val * subject_number) % 20201227;
