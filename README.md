@@ -111,3 +111,5 @@ A list of the puzzles, and what new language/tool features I learned each day:
 ### [Day 22: Crab Combat](https://adventofcode.com/2020/day/22)
 - `DefaultHasher` for a 64-bit hash of arbitrary bytes (even provided incrementally). Handy!
 
+### [Day 23: Crab Cups](https://adventofcode.com/2020/day/23)
+
