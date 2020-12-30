@@ -57,8 +57,8 @@ fn solve_part1(input: &Input) -> String {
 #[rustfmt::skip]
 fn solve_part2(input: &Input) -> String {
     let mut next_cups = vec![0usize;1_000_000+1];
-    for i in 1..next_cups.len()-1 {
-        next_cups[i] = i+1;
+    for (i,next_cup) in next_cups.iter_mut().enumerate() {
+        *next_cup = i+1;
     }
     for i in 0..9 {
         let cup = input.cups[i];
