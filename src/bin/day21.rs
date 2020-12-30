@@ -28,7 +28,7 @@ fn solve_part1(input: &Input) -> String {
             let _ = non_allergenic_ingredients.insert(ingredient);
         }
         food.allergens.iter().for_each(|allergen| {
-            let candidates = allergen_candidates.entry(allergen).or_insert(food.ingredients.clone());
+            let candidates = allergen_candidates.entry(allergen).or_insert_with(|| food.ingredients.clone());
             // TODO: why doesn't *candidates = candidates.intersection(&food.ingredients).collect() work here?
             let mut new_candidates:HashSet<&str> = HashSet::with_capacity(candidates.len());
             candidates.intersection(&food.ingredients).for_each(|ing| { let _ = new_candidates.insert(ing); });
@@ -82,7 +82,7 @@ fn solve_part2(input: &Input) -> String {
             let _ = non_allergenic_ingredients.insert(ingredient);
         }
         food.allergens.iter().for_each(|allergen| {
-            let candidates = allergen_candidates.entry(allergen).or_insert(food.ingredients.clone());
+            let candidates = allergen_candidates.entry(allergen).or_insert_with(|| food.ingredients.clone());
             // TODO: why doesn't *candidates = candidates.intersection(&food.ingredients).collect() work here?
             let mut new_candidates:HashSet<&str> = HashSet::with_capacity(candidates.len());
             candidates.intersection(&food.ingredients).for_each(|ing| { let _ = new_candidates.insert(ing); });

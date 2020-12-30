@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::collections::hash_map::DefaultHasher;
 use std::collections::HashSet;
 use std::fs;
@@ -21,12 +22,18 @@ fn solve_part1(input: &Input) -> String {
     while !deck1.is_empty() && !deck2.is_empty() {
         let card1 = deck1.remove(0);
         let card2 = deck2.remove(0);
-        if card1 > card2 {
-            deck1.push(card1);
-            deck1.push(card2);
-        } else if card2 > card1 {
-            deck2.push(card2);
-            deck2.push(card1);
+        match card1.cmp(&card2) {
+            Ordering::Greater => {
+                deck1.push(card1);
+                deck1.push(card2);
+            }
+            Ordering::Less => {
+                deck2.push(card2);
+                deck2.push(card1);
+            }
+            Ordering::Equal => {
+                panic!("Cards can't be equal!");
+            }
         }
     }
     let winner = if deck1.is_empty() { deck2 } else { deck1 };
